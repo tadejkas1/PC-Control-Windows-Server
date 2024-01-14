@@ -70,7 +70,7 @@
     </style>
 </head>
 <body>
-  <h1>lock</h1>
+  <h1>Lock Status: <span id="lockStatus">{{ "Locked" if pc_locked else "Unlocked" }}</span></h1>
 
     <div class="container">
     <form method="get">
@@ -100,9 +100,29 @@
               xhr.open("GET", "/sleep");
               xhr.send();
           }
-      </script>
+          function sendRequest(url) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === 4) {
+                updateLockStatus();
+              }
+            };
+            xhr.send();
+          }
+      
+          function updateLockStatus() {
+            fetch('/get-lock-status')
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById('lockStatus').innerText = data.locked ? 'Locked' : 'Unlocked';
+            })
+            .catch(error => console.error('Error:', error));
+          }
+      
+          setInterval(updateLockStatus, 5000); // Update the status every 5 seconds
+    </script>
     </form>
-    <div class="container"></div>
     <form method="get">
       <button type="submit" class="quit-btn" onclick="quit()">quit</button>
       <script>
