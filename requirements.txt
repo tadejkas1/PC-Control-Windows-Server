@@ -1,0 +1,4 @@
+Flask
+WMI
+pyautogui
+psutil
