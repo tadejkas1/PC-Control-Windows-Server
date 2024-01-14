@@ -6,6 +6,7 @@ This Python Flask web application provides a web interface for controlling vario
 ## Features
 - Web-based control interface for your PC.
 - Options to turn the monitor on or off.
+- Ability to shut down the web interface remotely through the web control panel. This feature adds convenience and enhances control, allowing you to terminate the program directly from the browser.
   
 ## HomeKit Integration
 Apple users can integrate this application with HomeKit using the [PcControl Homebridge plugin](https://github.com/tadejkas1/PcControl). This plugin extends the capabilities of this application, allowing you to control your PC using Apple's Home app and Siri.
