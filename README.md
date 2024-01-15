@@ -1,4 +1,4 @@
-# PC Control Web Application
+# PC Control Windows Server
 
 ## Overview
 This Python Flask web application provides a web interface for controlling various PC functionalities, such as monitor control and system status updates. It's designed for ease of use and can be accessed through a web browser.
