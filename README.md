@@ -2,6 +2,7 @@
 
 ## Overview
 This Python Flask web application provides a web interface for controlling various PC functionalities, such as monitor control and system status updates. It's designed for ease of use and can be accessed through a web browser.
+**Please note that this application is intended for personal use only and is not designed for exposure to external networks.**
 
 ## Features
 - Web-based control interface for your PC.
