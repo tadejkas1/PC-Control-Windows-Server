@@ -17,7 +17,7 @@ Before running the application, you need to set up Python and install the necess
 
 1. **Install Python**: If you haven't already, download and install Python from [python.org](https://www.python.org/downloads/).
 
-2. **Install Dependencies**: To install the necessary dependencies, use the provided batch script `run.bat`. This script will automatically install the packages listed in `requirements.txt`. To execute the script, double-click on `run.bat` in the application directory.
+2. **Install Dependencies**: To install the necessary dependencies, use the provided batch script `requirements.bat`. This script will automatically install the packages listed in `requirements.txt`. To execute the script, double-click on `requirements.bat` in the application directory.
 
 4. **Setup Application**: Download all the application files (`PcControl.py`, HTML templates, etc.) to your system.
 
