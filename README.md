@@ -78,4 +78,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Author:** [TaDejKas](https://github.com/tadejkas1)
-**Version:** 1.5
+**Version:** 1.5.5
