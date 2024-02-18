@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Logs</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            background-color: #1c1c1c; /* Set the background color for the entire body */
+            color: #1c1c1c;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0; /* Remove default margin to ensure full body coverage */
+        }
+
+        h1 {
+            color: #f39c12;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .container {
+            width: 800px;
+            margin: auto;
+            margin-top: 50px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #2b2b2b;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #f39c12;
+            overflow-y: auto; /* Add vertical scrollbar if needed */
+            background-color: #2b2b2b; /* Set background color to match container */
+            max-height: 500px; /* Allow the content to expand naturally */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Logs</h1>
+
+    <div class="container">
+        <pre id="logContent">{{ logs_html | safe }}</pre>
+    </div>
+
+    <script>
+        // Function to scroll to the bottom of the pre element
+        function scrollToBottom() {
+            var logContent = document.getElementById("logContent");
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+
+        // Scroll to the bottom when the page loads
+        window.onload = function () {
+            scrollToBottom();
+        };
+
+        // Automatically scroll to the bottom when new content is added
+        var observer = new MutationObserver(function () {
+            scrollToBottom();
+        });
+
+        // Configure and start the observer
+        observer.observe(document.getElementById("logContent"), {
+            childList: true
+        });
+    </script>
+</body>
+
+</html>
