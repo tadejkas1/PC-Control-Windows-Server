@@ -8,6 +8,9 @@
             background-color: #1c1c1c;
             color: #1c1c1c;
             font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: -100%;
         }
                 
         h1 {
@@ -46,12 +49,29 @@
         }
 
         .container form button:hover {
+            transition: background-color 0.3s;
             background-color: #e67e22;
         }
 
-        .container form .quit-btn {
+        .quit-btn {
             margin-top: 10px;
             background-color: red;
+            color: white;
+            padding: 10px 23px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .quit-btn:hover {
+            transition: background-color 0.3s;
+            background-color: darkred;
+        }
+
+        .log-btn {
+            margin-top: 10px;
+            background-color: #00eaff;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -60,26 +80,177 @@
             cursor: pointer;
         }
 
-        .container form .quit-btn:hover {
-            background-color: darkred;
+        .log-btn:hover {
+            transition: background-color 0.3s;
+            background-color: #00eaff9d;
         }
+
+
         .user {
           text-align: center;
+        }
+
+
+
+        .burger-menu {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 99; /* Place it above the preloader */
+        }
+
+        .burger-menu div {
+            width: 30px;
+            height: 4px;
+            background-color: #f39c12;
+            margin: 6px 0;
+            transition: 0.4s;
+            border-radius: 2px;
+        }
+        .burger-menu div:hover {
+          background-color: #e67d228b;
+        }
+
+        .menu-container {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-container.show {
+            transition: left 0.01s;
+            left: 0;
+        }
+
+        .menu-content {
+            position: absolute;
+            top: 140px;
+            left: 0;
+            transform: translateX(-100%);
+            background-color: #2b2b2b;
+            padding: 18px;
+            padding-bottom: 28px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .menu-container.hide .menu-content {
+            transform: translateX(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0,5s, opacity 1s, visibility 1s;
+        }
+        
+        .menu-container.show .menu-content {
+            transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
+            transition: transform 0.5s, opacity 1s, visibility 1s;
+        }
+
+
+        .menu-content a {
+            display: block;
+            color: #f39c12;
+            margin-top: 6px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+
+
+
+
+        #preloader {
+          background-color: #1c1c1c; 
+          background-image: url('/static/preloader.gif');
+          background-size: 100px 100px;
+          background-repeat: no-repeat;
+          background-position: center center;
+          height: 100vh;
+          width: 100%;
+          position: fixed;
+          z-index: 150;
         }
 
     </style>
 </head>
 <body>
+  <div id="preloader"></div>
   <h1>Lock Status: <span id="lockStatus">{{ "Locked" if pc_locked else "Unlocked" }}</span></h1>
+  <!-- Burger Menu -->
+  <div class="burger-menu" id="burgerMenu" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Navigation Menu Container -->
+  <div class="menu-container" id="menuContainer">
+      <div class="menu-content">
+          <button type="submit" class="log-btn" onclick="log()">Logs</button>
+          <a><button type="submit" class="quit-btn" onclick="quit()">Quit</button></a>
+          <!-- Add more menu options as needed -->
+      </div>
+  </div>
 
     <div class="container">
     <form method="get">
         <label class="user" for="user">{{ user }}</label>
-        <button type="submit" class="btn btn-primary" onclick="unlock()">lock</button>
+        <button type="submit" class="btn btn-primary" onclick="unlock()">Lock</button>
         <button type="submit" class="btn btn-primary" onclick="off()">Monitor off</button>
         <button type="submit" class="btn btn-primary" onclick="on()">Monitor on</button>
-        <button type="submit" class="btn btn-primary" onclick="sleep()">sleep</button>
+        <button type="submit" class="btn btn-primary" onclick="sleep()">Sleep</button>
         <script>
+          function toggleMenu() {
+              var menuContainer = document.getElementById("menuContainer");
+              menuContainer.classList.toggle("show");
+              menuContainer.classList.toggle("hide");
+          }
+      
+          function closeMenuOutside(event) {
+              var menuContainer = document.getElementById("menuContainer");
+              if (!menuContainer.contains(event.target) && event.target !== document.getElementById("burgerMenu")) {
+                  menuContainer.classList.remove("show");
+                  menuContainer.classList.add("hide");
+                  document.removeEventListener('click', closeMenuOutside);
+              }
+          }
+      
+          function quit() {
+              var xhr = new XMLHttpRequest();
+              xhr.open("GET", "/quit");
+              xhr.send();
+          }
+      
+          function log() {
+              window.location.href = "/log";
+          }
+      
+          document.getElementById("burgerMenu").addEventListener('click', function(event) {
+              event.stopPropagation();
+          });
+      
+          document.addEventListener('click', function(event) {
+              var menuContainer = document.getElementById("menuContainer");
+              if (menuContainer.classList.contains("show")) {
+                  closeMenuOutside(event);
+              }
+          });
+      
+          document.getElementById("menuContainer").addEventListener('transitionend', function(event) {
+              var menuContainer = document.getElementById("menuContainer");
+              if (event.propertyName === 'left' && menuContainer.classList.contains("hide")) {
+                  menuContainer.classList.remove("hide");
+              }
+          });
+          
           function unlock() {
               var xhr = new XMLHttpRequest();
               xhr.open("GET", "/lock");
@@ -123,14 +294,18 @@
           setInterval(updateLockStatus, 5000); // Update the status every 5 seconds
     </script>
     </form>
-    <form method="get">
-      <button type="submit" class="quit-btn" onclick="quit()">quit</button>
-      <script>
-        function quit() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/quit");
-            xhr.send();
-        }
-    </script>
     </div>
+
+  
+
+    <script>
+      var loader = document.getElementById("preloader");
+      window.addEventListener("load", function() {
+          setTimeout(function() {
+              loader.style.display = "none";
+          }, 1000); // 1000 milliseconds = 1 second
+      })
+  </script>
+  
+
 </body>        
